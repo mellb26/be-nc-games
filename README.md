@@ -4,6 +4,8 @@ In order to work on this repo, the following files must have been created:
 Inside each file the according database must also be added:
 PGDATABASE=nc_games or PGDATABASE=nc_games_test
 
+done.
+
 ## Background
 
 We will be building an API for the purpose of accessing application data programmatically. The intention here is to mimic the building of a real world backend service (such as reddit) which should provide this information to the front end architecture.
