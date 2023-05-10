@@ -20,7 +20,7 @@ describe('api test suite', () => {
                 expect(result.categories.length).toBe(4)
             })
     })
-    describe.only("api errors", () => {
+    describe("api errors", () => {
         test("status: 404, responds with an error message when passed a route  that does not exist", () => {
             return request(app)
                 .get("/api/NotFound")
@@ -34,12 +34,3 @@ describe('api test suite', () => {
 })
  
 
-//     test("status: 400, responds with an error message when passed an invalid input", () => {
-        //       return request(app)
-        //         .get("/invalid")
-        //         .expect(400)
-        //         .then(({ body }) => {
-        //           expect(body.msg).toEqual("Invalid input")
-        //         })
-        //     })
-        // test("status: ")
