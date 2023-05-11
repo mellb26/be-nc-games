@@ -59,7 +59,7 @@ test("GET - /api/reviews/review_id returns an array of objects with 9 properties
     });
 });
 
-describe("api errors", () => {
+describe("api 404 errors", () => {
     test("status: 404, responds with an error message when passed a route that does not exist", () => {
         return request(app)
             .get("/api/category/NotFound")
@@ -70,17 +70,23 @@ describe("api errors", () => {
             });
     });
 })
-    test("status: 404, responds with an error message when passed an invalid ID", () => {
+test("status: 404, responds with an error message when passed an invalid ID", () => {
+    return request(app)
+        .get("/api/reviews/99999")
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toEqual("review not found");
+        })
+})
+describe("api 400 errors", () => {
+    test("status: 400, responds with an error message when passed an invalid ID", () => {
         return request(app)
-            .get("/api/reviews/99999")
-            .expect(404)
-            .then(({body}) => {
-                
-                expect(body.msg).toEqual("review not found");
+            .get("/api/reviews/notAnID")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toEqual("400 Bad Request");
             })
     })
-
-
-
+})
     
 

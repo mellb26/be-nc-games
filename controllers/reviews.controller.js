@@ -9,7 +9,6 @@ exports.getReviews = (request, response, next) => {
       response.status(200).send({ review: reviewsArray });
     })
       .catch((err) => {
-       
           next(err)
     })
 };
