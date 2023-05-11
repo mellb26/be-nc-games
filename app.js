@@ -1,15 +1,15 @@
 const express = require('express');
 const { getCategories } = require('./controllers/categories.controller')
+const { getEndpoints } = require('./controllers/endPoints.controller')
 const app = express()
 app.use(express.json());
 
 app.get('/api/categories', getCategories)
+app.get('/api', getEndpoints)
 
-    
 app.use((req, res, next) => {
     res.status(404).send({ msg: "404 not found" });
-});
-
+})
 app.use((err, req, res, next) => {
     if (err.code === '23503') {
         res.status(404).send({msg: "not found"})
@@ -22,5 +22,4 @@ app.use((err, req, res, next) => {
 app.use((err, req, res, next) => {
     console.log(err)
 })
-
 module.exports = app;

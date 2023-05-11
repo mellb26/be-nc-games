@@ -3,6 +3,7 @@ const seed = require("../db/seeds/seed.js");
 const connection = require("../db/connection");
 const app = require('../app.js');
 const testData = require('../db/data/test-data')
+
 beforeEach(() => seed(testData))
 afterAll(() => connection.end());
 
@@ -20,17 +21,34 @@ describe('api test suite', () => {
                 expect(result.categories.length).toBe(4)
             })
     })
-    describe("api errors", () => {
-        test("status: 404, responds with an error message when passed a route  that does not exist", () => {
-            return request(app)
-                .get("/api/NotFound")
-                .expect(404)
-                .then(({ body }) => {
-                    expect(body.msg).toEqual("404 not found")
-                })
-        })
-        
-        })
 })
- 
-
+            describe("GET api", () => {
+              test("GET - /api/ returns a JSON object containing endpoint information", () => {
+                return request(app)
+                  .get("/api")
+                  .expect(200)
+                    .then((response) => {
+    
+                    expect(response.body.endPoints.hasOwnProperty("GET /api")).toBe(true)
+                    expect(response.body.endPoints.hasOwnProperty("GET /api/categories")).toBe(true)
+                   expect(typeof response).toBe('object')
+                        Object.keys(response.body.endPoints).forEach((endpoint) => {
+                            expect(endpoint).hasOwnProperty('description')
+                            expect(endpoint).hasOwnProperty('queries')
+                            expect(endpoint).hasOwnProperty('exampleResponse')
+                        })
+                        
+                  });
+              });
+            });
+                
+describe("api errors", () => {
+    test("status: 404, responds with an error message when passed a route  that does not exist", () => {
+        return request(app)
+            .get("/api/NotFound")
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toEqual("404 not found")
+            })
+    })
+})
