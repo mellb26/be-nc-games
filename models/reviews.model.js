@@ -6,7 +6,14 @@ const testData = require("../db/data/test-data/index");
     
    return connection
      .query(`SELECT * FROM reviews WHERE review_id = $1`, [review_id])
-     .then((result) => {
-       return result.rows[0];
+       .then((result) => {
+        
+         if (result.rows.length === 0) {
+             return Promise.reject({
+                 status: 404,
+                 msg: "review not found"
+         })
+         }
+         return result.rows[0] 
      });
  };
