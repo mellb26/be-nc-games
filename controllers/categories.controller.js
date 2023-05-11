@@ -7,3 +7,5 @@ exports.getCategories = (request, response, next) => {
       })
       .catch((err) => {});
 }
+
+
