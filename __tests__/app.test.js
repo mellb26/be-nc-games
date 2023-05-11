@@ -46,7 +46,6 @@ test.only("GET - /api/reviews/review_id returns an array of objects with 9 prope
     .expect(200)
     .then((response) => {
         const { review }=  response.body;
-        console.log(review)
         expect(review.review_id).toBe(1)
         expect(typeof review.review_id).toBe("number");
         expect(typeof review.designer).toBe('string');
