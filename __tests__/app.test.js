@@ -57,6 +57,24 @@ test("GET - /api/reviews/review_id returns an array of objects with 9 properties
         expect(typeof review.votes).toBe('number')
 
     });
+})
+test("GET - /api/reviews returns the reviews sorted by date in descending order", () => {
+    return request(app)
+        .get("/api/reviews")
+        .expect(200)
+        .then((response) => {
+            expect(response.body.reviews).toBeSortedBy("created_at")
+            response.body.reviews.forEach((review) => {
+            expect(review).hasOwnProperty('review_id') 
+            expect(review).hasOwnProperty('owner')
+                expect(review).not.toHaveProperty("review_body")
+                expect(review).hasOwnProperty('title')
+                expect(review).hasOwnProperty('review_img_url')
+                expect(review).hasOwnProperty('category')
+                expect(review).hasOwnProperty('created_at')
+                expect(review).hasOwnProperty('votes');
+            })
+    })
 });
 
 describe("api 404 errors", () => {
@@ -66,9 +84,9 @@ describe("api 404 errors", () => {
             .expect(404)
             .then(({ body }) => {
                 expect(body.msg).toEqual("404 not found");
-
             });
     });
+
 })
 test("status: 404, responds with an error message when passed an invalid ID", () => {
     return request(app)
