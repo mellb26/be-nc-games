@@ -12,18 +12,7 @@ app.get('/api/reviews/:review_id', getReviews);
 app.use('*', (req, res) => {
     res.status(404).send({msg: '404 not found'})
 })
-// app.use((err, req, res, next) => {
-//     if (res.status && err.msg) {
-//     res.status(err.status).send(err.msg)
-// }
 
-// })
-// app.use((req, res, next) => {
-//         res.status(400).send({msg: '400 Bad Request'});
-   
-// })
-
-// res.status(500).send({ msg: "Internal Server Error" });
 app.use((err, req, res, next) => {
     if (err.code === "22P02") {
       res.status(400).send({ msg: "400 Bad Request" });
