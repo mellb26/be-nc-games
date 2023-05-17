@@ -55,7 +55,6 @@ test("GET - /api/reviews/review_id returns an array of objects with 9 properties
         expect(typeof review.category).toBe('string');
         expect(typeof review.created_at).toBe('string');
         expect(typeof review.votes).toBe('number')
-
     });
 })
 test("GET - /api/reviews returns the reviews sorted by date in descending order", () => {
@@ -75,8 +74,25 @@ test("GET - /api/reviews returns the reviews sorted by date in descending order"
                 expect(review).hasOwnProperty('votes');
             })
     })
-});
-
+})
+describe("GET - /api/reviews/review_id/comments", () => {
+    test("returns an array of comments", () => {
+        return request(app)
+            .get("/api/reviews/2/comments")
+            .expect(200)
+          .then((response) => {
+              expect(typeof response.body.comments).toBe('object')
+              Object.keys(response.body.comments).forEach((comment) => {
+                expect(comment).hasOwnProperty('comment_id');
+                expect(comment).hasOwnProperty('body');
+                expect(comment).hasOwnProperty('review_id');
+                expect(comment).hasOwnProperty('votes');
+                expect(comment).hasOwnProperty('created_at');
+              })
+            })
+    })
+})
+    
 describe("api 404 errors", () => {
     test("status: 404, responds with an error message when passed a route that does not exist", () => {
         return request(app)
