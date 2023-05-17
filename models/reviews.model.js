@@ -36,3 +36,24 @@ COUNT(comments.review_id) AS comment_count FROM reviews
        return result.rows
        });
  };
+
+exports.addComments = (review_id) => {
+    console.log(review_id)
+    return connection
+      .query(
+        `SELECT * FROM comments WHERE review_id = $1 ORDER BY comments.created_at DESC`,
+        [review_id]
+      )
+
+      .then((result) => {
+   
+        if (result.rows.length === 0) {
+            return Promise.reject({
+                status: 404,
+                msg: `no comment found for ${review_id}`
+            })
+        }
+        return result.rows;
+      });
+  
+    }
