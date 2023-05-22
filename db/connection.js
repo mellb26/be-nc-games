@@ -8,7 +8,6 @@ if (!process.env.PGDATABASE && !process.env.DATABASE_URL) {
   throw new Error('PGDATABASE not set or DATABASE_URL not set');
 }
 
-
 const config =
   ENV === "production"
     ? {
