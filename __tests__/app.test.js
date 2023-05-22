@@ -92,7 +92,40 @@ describe("GET - /api/reviews/review_id/comments", () => {
             })
     })
 })
-    
+
+describe("POST - /api/reviews/:review_id/comments", () => {
+  test("returns the comment and username", () => {
+    const body = {
+      body: 'I love this game',
+        username: 'mallionaire'
+    }
+    return request(app).post('/api/reviews/2/comments')
+      .send(body)
+      .expect(201)
+      .then(({ body }) => {
+        expect(typeof body.comment.author).toBe('string');
+        expect(body.comment.review_id).toBe(2);
+        expect(typeof body.comment.body).toBe('string');
+        expect(typeof body.comment.comment_id).toBe('number');
+        expect(typeof body.comment.votes).toBe('number');
+        expect(typeof body.comment.created_at).toBe('string');
+      })
+  })
+})
+
+describe("PATCH - /api/reviews/:review_id", () => {
+  test("returns the vote count updated", () => {
+    return request(app)
+      .patch("/api/reviews/13")
+      .send({inc_vote: 1})
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.review.title).toBe("Settlers of Catan: Don't Settle For Less");
+        expect(body.review.votes).toBe(17)
+      })
+  });
+});
+
 describe("api 404 errors", () => {
     test("status: 404, responds with an error message when passed a route that does not exist", () => {
         return request(app)
