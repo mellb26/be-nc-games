@@ -16,6 +16,20 @@ const testData = require("../db/data/test-data/index");
      });
  };
 
+ exports.newComments = (review_id) => {
+   return connection
+     .query(`SELECT * FROM reviews WHERE review_id = $1`, [review_id])
+     .then((result) => {
+       if (result.rows.length === 0) {
+         return Promise.reject({
+           status: 404,
+           msg: "review not found",
+         });
+       }
+       return result.rows[0];
+     });
+ };
+
  exports.addSortBy = () => {
      return connection
        .query(
@@ -44,9 +58,8 @@ exports.addComments = (review_id) => {
         `SELECT * FROM comments WHERE review_id = $1 ORDER BY comments.created_at DESC`,
         [review_id]
       )
-
       .then((result) => {
-   
+
         if (result.rows.length === 0) {
             return Promise.reject({
                 status: 404,
@@ -55,5 +68,35 @@ exports.addComments = (review_id) => {
         }
         return result.rows;
       });
-  
-    }
+}
+exports.newComments = (review_id, comments) => {
+  const { username, body } = comments;
+  if (username === false && body === false) {
+    return Promise.reject({ status: 400 });
+  }
+  return connection
+    .query(`INSERT INTO comments
+    (body, review_id, author)
+    VALUES
+    ($1, $2, $3)
+    RETURNING *`,[body, review_id, username])
+    .then((result) => {
+      return result.rows[0]
+    })
+}
+
+exports.newPatch = (review_id, updated) => {
+  return connection.query(`
+    UPDATE reviews
+    SET
+    votes = votes + $1
+    WHERE 
+    review_id = $2
+    RETURNING *`, [updated.inc_vote, review_id]).then((result) => {
+    console.log(result)
+   return result.rows[0]
+    }).catch((err) => {
+        return Promise.reject(err)
+    })
+}
+
