@@ -3,13 +3,12 @@
   "version": "1.0.0",
   "description": "bc-nc-games",
   "main": "listen.js",
-
   "scripts": {
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "node ./db/seeds/run-seed.js",
     "test": "jest",
     "prepare": "husky install",
-     "start": "node listen.js",
+    "start": "node listen.js",
     "seed-prod": "NODE_ENV=production npm run seed"
   },
   "repository": {
@@ -27,20 +26,21 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "fs.promises": "^0.1.2",
-    "pg": "^8.10.0"
+    "pg": "^8.10.0",
+     "pg-format": "^1.0.4"
   },
   "devDependencies": {
     "husky": "^8.0.2",
     "jest": "^27.5.1",
     "jest-extended": "^2.0.0",
     "jest-sorted": "^1.0.14",
-    "pg-format": "^1.0.4",
+   
     "supertest": "^6.3.3"
   },
   "jest": {
     "setupFilesAfterEnv": [
       "jest-extended/all",
-    "jest-sorted"
+      "jest-sorted"
     ]
   }
 }
